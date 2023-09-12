@@ -15,7 +15,8 @@ namespace QuizzWeb.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = new TextFile();
+            return View(model);
         }
 
         public IActionResult Privacy()
