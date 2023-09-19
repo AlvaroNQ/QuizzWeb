@@ -2,7 +2,39 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+<style>
+    /* Add CSS styles for the container and child divs */
+    .container {
+        width: 70%;
+        display: flex; /* Use flexbox for layout */
+        justify-content: center;
+    }
+
+    .child {
+        width: 50%; /* Each child div takes 50% of the container's width */
+        padding: 20px; /* Add padding for spacing */
+        border: 1px solid #ccc; /* Add borders for separation (optional) */
+    }
+</style>
+
+
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to QuizzWeb</h1>
+    <br />
+    <div class="container" style="text-align: center;">
+        <div class="child">
+            <p style="text-align:justify">Find out about our latest Quizzes! Created by users like you who want to bla bla more text, enjoy! who want to bla bla more text, enjoy! </p>
+            <button class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Search">Search Quizz</a>
+            </button>
+        </div>
+        <div class="child">
+            <p style="text-align:justify">Or create your own Quizzes to be shared by the whole community bla bla bla Some text about how to create quizzes.</p>
+            <button class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Create">Create Quizz</a>
+            </button>
+        </div>
+    </div>
 </div>
