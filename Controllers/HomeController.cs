@@ -24,6 +24,10 @@ namespace QuizzWeb.Controllers
             return View();
         }
 
+        public IActionResult SaveQuizz() {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
