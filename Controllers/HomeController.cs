@@ -2,7 +2,7 @@
 using QuizzWeb.Models;
 using System.Diagnostics;
 
-namespace QuizzWeb.Controllers
+namespace QuizWeb.Controllers
 {
     public class HomeController : Controller
     {
@@ -24,7 +24,11 @@ namespace QuizzWeb.Controllers
             return View();
         }
 
-        public IActionResult SaveQuizz() {
+        public IActionResult SaveQuiz() {
+            return View();
+        }
+        public IActionResult SearchQuiz()
+        {
             return View();
         }
 
