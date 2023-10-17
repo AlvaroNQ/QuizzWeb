@@ -1,6 +1,8 @@
 ﻿// Controllers/QuizController.cs
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using QuizzWeb.Controllers;
+
 namespace QuizzWeb.Models;
 public class SearchQuizController : Controller
 {
@@ -12,26 +14,13 @@ public class SearchQuizController : Controller
     [HttpPost]
     public IActionResult LoadQuiz(string quizTitle)
     {
-        var jsonFiles = Directory.EnumerateFiles("Assets", "*.json");
+        QuizManager quizManager = new QuizManager();
+        QuizModel? quiz = quizManager.searchQuiz(quizTitle);
 
-        foreach (var jsonFile in jsonFiles)
-        {
-            string jsonContent = System.IO.File.ReadAllText(jsonFile);
-            JObject jsonObj = JObject.Parse(jsonContent);
-
-            if (jsonObj["Title"].ToString() == quizTitle)
-            {
-                //Quiz is opened
-                jsonObj["Metadata"]["Status"] = QuizStatusModel.InProgress.ToString();
-                jsonObj["Metadata"]["lastOpened"] = DateTime.Now;
-
-                System.IO.File.WriteAllText(jsonFile, jsonObj.ToString());
-                QuizModel quizModel = jsonObj.ToObject<QuizModel>();
-                
-                return View("LoadQuiz", quizModel);
-            }
+        if (quiz != null) {
+            quizManager.openQuiz(quiz);
+            return View("LoadQuiz", quiz);
         }
         return Content("Quiz not found");
-    }
-
+    }   
 }

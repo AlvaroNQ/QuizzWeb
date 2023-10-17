@@ -25,10 +25,14 @@ namespace QuizzWeb.Controllers
             foreach (QuestionModel question in quiz.Questions) {
                 question.Answers.Add(question.CorrectAnswer);
             }
+
             string path = "./Assets/";
             string[] filesInDir = Directory.GetFiles(path, "quiz*.json");
             string fileName = $"quiz{filesInDir.Length + 1}.json";
             string filePath = Path.Combine(path, fileName);
+            
+            QuizMetadataModel metadata = new QuizMetadataModel(fileName);
+            quiz.Metadata = metadata;
 
             string json = JsonSerializer.Serialize(quiz, new JsonSerializerOptions{WriteIndented = true});
             System.IO.File.WriteAllText(filePath, json);

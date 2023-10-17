@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.AccessControl;
 
 namespace QuizzWeb.Controllers
 {
@@ -14,15 +15,26 @@ namespace QuizzWeb.Controllers
         public IActionResult CheckAnswer(Dictionary<string, string> formValues)
         {
             List<string> userAnswers = new List<string>();
+            QuizManager quizManager = new QuizManager();
+            QuizModel quiz = quizManager.searchQuiz(formValues["Title"]);
+            quizManager.closeQuiz(quiz);
 
             foreach (var answer in formValues.Values)
             {
                 userAnswers.Add(answer);
             }
 
+            int i = 1;
+            int countCorrect = 0;
+            foreach (QuestionModel question in quiz.Questions) {
+                if (question.CorrectAnswer == userAnswers[i]) {
+                    countCorrect++;
+                }
+                i++;
+            }
 
 
-            return Content($"Selected Answers: {string.Join(", ", userAnswers)}");
+            return Content($"Correct Answers: " + countCorrect);
         }
     }
 }

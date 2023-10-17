@@ -1,0 +1,30 @@
+{
+  "Metadata": {
+    "FileName": "quiz1.json",
+    "PassRate": 0,
+    "Status": "InProgress",
+    "creationDate": "2023-10-17T15:09:07.8091661+03:00",
+    "lastOpened": "2023-10-17T15:17:31.9417866+03:00"
+  },
+  "Title": "123",
+  "Questions": [
+    {
+      "QuestionText": "Q1",
+      "CorrectAnswer": "1",
+      "Answers": [
+        "1",
+        "2",
+        "2"
+      ]
+    },
+    {
+      "QuestionText": "Q2",
+      "CorrectAnswer": "2",
+      "Answers": [
+        "2",
+        "3",
+        "3"
+      ]
+    }
+  ]
+}
