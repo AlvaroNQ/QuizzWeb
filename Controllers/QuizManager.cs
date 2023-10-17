@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using System.IO;
+using System.Text.Json;
+using System.Linq;
 
 namespace QuizzWeb.Controllers
 {
@@ -8,7 +9,7 @@ namespace QuizzWeb.Controllers
     {
         private QuizModel? Quiz = null;
         private String PathToJsons;
-        public QuizManager(string pathToJsons = "Assets")
+        public QuizManager(string pathToJsons = "./Assets/")
         {
             this.PathToJsons = pathToJsons;
         }
@@ -17,18 +18,41 @@ namespace QuizzWeb.Controllers
         {
             var jsonFiles = Directory.EnumerateFiles(this.PathToJsons, "*.json");
 
-            foreach (var jsonFile in jsonFiles)
+            // Deserialize each file content into QuizModel and project into a list.
+            var quizzes = jsonFiles.Select(file =>
             {
-                string jsonContent = File.ReadAllText(jsonFile);
-                JObject jsonObj = JObject.Parse(jsonContent);
+                string content = System.IO.File.ReadAllText(file);
+                return JsonSerializer.Deserialize<QuizModel>(content);
+            }).ToList();
 
-                if (jsonObj["Title"].ToString() == quizTitle)
+            // Find the matching quiz using LINQ
+            var matchingQuiz = quizzes.FirstOrDefault(q => q.Title == quizTitle);
+
+            if (matchingQuiz != null)
+            {
+                // If a quiz is found, update its properties
+                matchingQuiz.Metadata = new QuizMetadataModel
                 {
-                    this.Quiz = jsonObj.ToObject<QuizModel>();
-                    return Quiz;
-                }
+                    creationDate = matchingQuiz.Metadata.Value.creationDate,
+                    Status = QuizStatusModel.InProgress,
+                    lastOpened = DateTime.Now,
+                };
             }
-            return this.Quiz;
+
+            // Find the file path of the matching quiz
+            string quizFilePath = jsonFiles.First(file =>
+            {
+                string content = System.IO.File.ReadAllText(file);
+                var quiz = JsonSerializer.Deserialize<QuizModel>(content);
+                return quiz.Title == quizTitle;
+            });
+
+            // Serialize the updated quiz back to JSON and save it to the file
+            string updatedQuizJson = JsonSerializer.Serialize(matchingQuiz);
+            System.IO.File.WriteAllText(quizFilePath, updatedQuizJson);
+
+            // Pass the name of the quiz into the view
+            return matchingQuiz;
         }
 
         public void openQuiz(QuizModel quiz, string path = "Assets") {
