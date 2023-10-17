@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Text.Json;
+using System.Linq;
+using Microsoft.VisualBasic;
+using System;
 
 namespace QuizzWeb.Controllers
 {
@@ -16,20 +20,25 @@ namespace QuizzWeb.Controllers
         public QuizModel? searchQuiz(string quizTitle)
         {
             var jsonFiles = Directory.EnumerateFiles(this.PathToJsons, "*.json");
+            List<QuizModel> jsonQuizzes = new List<QuizModel>();
 
             foreach (var jsonFile in jsonFiles)
             {
                 string jsonContent = File.ReadAllText(jsonFile);
                 JObject jsonObj = JObject.Parse(jsonContent);
 
-                if (jsonObj["Title"].ToString() == quizTitle)
-                {
-                    this.Quiz = jsonObj.ToObject<QuizModel>();
-                    return Quiz;
-                }
+                jsonQuizzes.Add(jsonObj.ToObject<QuizModel>());
             }
+
+            this.Quiz = jsonQuizzes.FirstOrDefault(q => q.Title == quizTitle);
+
+            if (this.Quiz == null)
+                return null;
+
+
             return this.Quiz;
         }
+
 
         public void openQuiz(QuizModel quiz, string path = "Assets") {
             string jsonContent = File.ReadAllText(path + "/" + quiz.Metadata.Value.FileName);

@@ -10,7 +10,6 @@ public class QuizModel : QuestionnaireModel, IComparable<QuizModel>
         this.Metadata = new QuizMetadataModel();
     }
 
-
     public int CompareTo(QuizModel other)
     {
         if (other == null) return 1;
