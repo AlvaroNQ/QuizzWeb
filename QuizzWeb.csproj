@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Models\TextFile.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Assets\" />
     <Folder Include="Views\NewFolder\" />
   </ItemGroup>
