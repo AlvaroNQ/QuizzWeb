@@ -12,8 +12,13 @@
 
   <ItemGroup>
     <Folder Include="Assets\" />
+    <Folder Include="Views\NewFolder\" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties assets_4quizz1_1json__JsonSchema="https://bitbucket.org/atlassianlabs/intellij-bitbucket-references-plugin/raw/master/src/main/resources/schemas/bitbucket-pipelines.schema.json" /></VisualStudio></ProjectExtensions>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

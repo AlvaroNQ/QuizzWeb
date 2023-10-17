@@ -1,0 +1,10 @@
+﻿<!-- Views/Quiz/Index.cshtml -->
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Enter Quiz Name</h2>
+<form method="post" action="/SearchQuiz/LoadQuiz">
+    <input type="text" name="quizTitle" />
+    <button type="submit">Load Quiz</button>
+</form>

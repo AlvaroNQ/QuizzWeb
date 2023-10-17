@@ -15,8 +15,7 @@ namespace QuizzWeb.Controllers
 
         public IActionResult Index()
         {
-            var model = new TextFile();
-            return View(model);
+            return View();
         }
 
         public IActionResult Privacy()
@@ -24,9 +23,15 @@ namespace QuizzWeb.Controllers
             return View();
         }
 
-        public IActionResult SaveQuizz() {
+        public IActionResult SearchQuiz() {
             return View();
         }
+
+        public IActionResult SaveQuiz() {
+            return View();
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
