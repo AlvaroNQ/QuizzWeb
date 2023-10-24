@@ -16,6 +16,7 @@ public class QuizModel : QuestionnaireModel, IEquatable<QuizModel>
 		if (this.Title != other.Title) return false;
 		if (other.Questions == null && this.Questions == null) return true;
 		if (other.Questions == null || this.Questions == null) return false;
+		if (this.Questions.Count != other.Questions.Count) return false;
 
 		foreach (QuestionModel question in this.Questions)
 		{
