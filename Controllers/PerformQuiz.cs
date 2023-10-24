@@ -23,7 +23,6 @@ namespace QuizzWeb.Controllers
             {
                 userAnswers.Add(answer);
             }
-            // shouldn't it start from 0?
             int i = 1;
             int countCorrect = 0;
             foreach (QuestionModel question in quiz.Questions) {
