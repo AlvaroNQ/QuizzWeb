@@ -2,80 +2,57 @@
     ViewData["Title"] = "Create Quiz";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
 
-        label, input, button {
-            margin-bottom: 10px;
-            display: block;
-        }
-    </style>
-</head>
-<body>
+<h1>@ViewData["Create Quizz"]</h1>
 
-    <h1>@ViewData["Create Quizz"]</h1>
+<form method="post" action="/SaveQuiz/Save">
+    <label for="quiz-title">Quiz Title:</label>
+    <input type="text" id="quiz-title" name="Title" required>
 
-    <form method="post" action="/SaveQuiz/Save">
-        <label for="quiz-title">Quiz Title:</label>
-        <input type="text" id="quiz-title" name="Title" required>
+    <div id="questions-container">
+    </div>
 
-        <div id="questions-container">
-            <!-- Questions will be dynamically added here -->
-        </div>
-
-        <button type="button" onclick="addQuestion()">Add Question</button>
-        <button type="submit">Save Quiz</button>
-    </form>
+    <button type="button" onclick="addQuestion()">Add Question</button>
+    <button type="submit">Save Quiz</button>
+</form>
 
 
-    <script>
-        function addQuestion() {
-            const questionsContainer = document.getElementById('questions-container');
-            const questionNumber = questionsContainer.children.length + 1;
+<script>
+    function addQuestion() {
+        const questionsContainer = document.getElementById('questions-container');
+        const questionNumber = questionsContainer.children.length;
 
-            const questionDiv = document.createElement('div');
-            questionDiv.innerHTML = `
-                    <label for="question${questionNumber}">Question ${questionNumber}:</label>
-                    <input type="text" id="question${questionNumber}" name="Questions[${questionNumber - 1}].QuestionText" required>
+        const questionDiv = document.createElement('div');
+        questionDiv.id = `questionDiv${questionNumber}`;
 
-                    <label for="answer${questionNumber}">Correct Answer:</label>
-                    <input type="text" id="answer${questionNumber}" name="Questions[${questionNumber - 1}].CorrectAnswer" required>
+        questionDiv.innerHTML = `
+                <label for= "question${questionNumber}"> Question ${questionNumber + 1}: </label>
+                <input type = "text" id ="question${questionNumber}" name = "Questions[${questionNumber}].QuestionText" required >
 
-                    <div id="answers${questionNumber}"></div>
+                <label for= "questionCorrectAns${questionNumber}"> Correct Answer: </label>
+                <input type = "text" id = "questionCorrectAns${questionNumber}" name = "Questions[${questionNumber}].CorrectAnswer" required >
 
-                    <button type="button" onclick="addAnswer('answers${questionNumber}')">Add Answer</button>
+                <div id="answersDiv${questionNumber}"></div>
+
+                <button type="button" onclick = "addAnswer('${questionNumber}')" > Add Answer </button>
                 `;
 
-            questionsContainer.appendChild(questionDiv);
-        }
+        questionsContainer.appendChild(questionDiv);
+    }
 
-        function addAnswer(containerId) {
-            const answerContainer = document.getElementById(containerId);
-            const answerCount = answerContainer.children.length + 1;
+    function addAnswer(questionNumber) {
+        const answersContainer = document.getElementById(`answersDiv${questionNumber}`);
+        const answerNumber = answersContainer.children.length;
 
-            const newAnswerDiv = document.createElement('div');
-            newAnswerDiv.innerHTML = `
-                    <label for="answer${containerId}-${answerCount}">Answer ${answerCount}:</label>
-                    <input type="text" id="answer${containerId}-${answerCount}" name="Questions[${containerId.charAt(containerId.length - 1) - 1}].Answers[${answerCount - 1}]" required>
+        const newAnswer = document.createElement('div');
+        newAnswer.id = `wrongAnsDiv${answerNumber}`;
+        newAnswer.innerHTML = `
+                    <label for= "questionAns${answerNumber}" > Wrong Answer: </label>
+                    <input type = "text" id = "questionAns${answerNumber}" name = "Questions[${questionNumber}].Answers[${answerNumber}]" required >
                 `;
 
-            answerContainer.appendChild(newAnswerDiv);
-
-            // Move the "Add Answer" button to the end of the container
-            const addAnswerButton = answerContainer.querySelector('button');
-            answerContainer.appendChild(addAnswerButton);
-        }
-    </script>
+        answersContainer.appendChild(newAnswer);
+    }
+</script>
 
 
-</body>
-</html>
