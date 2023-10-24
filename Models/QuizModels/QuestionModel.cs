@@ -1,19 +1,19 @@
-﻿public record QuestionModel : IComparable<QuestionModel>
+﻿public record QuestionModel : IEquatable<QuestionModel>
 {
-    public string? QuestionText { get; set; }
-    public string? CorrectAnswer { get; set; }
-    public List<string>? Answers { get; set; }
+	public string? QuestionText { get; set; }
+	public string? CorrectAnswer { get; set; }
+	public List<string>? Answers { get; set; }
 
-    public int CompareTo(QuestionModel other)
+	public virtual bool Equals(QuestionModel? other)
+	{
+		if (other == null) return false;
+
+		if (this.QuestionText != other.QuestionText) return false;
+		if (this.CorrectAnswer != other.CorrectAnswer) return false;
+		return true;
+	}
+    public override int GetHashCode()
     {
-        if (other == null) return 1;
-
-        int textComparison = string.Compare(QuestionText, other.QuestionText, StringComparison.Ordinal);
-        if (textComparison != 0)
-        {
-            return textComparison;
-        }
-
-        return string.Compare(CorrectAnswer, other.CorrectAnswer, StringComparison.Ordinal);
+		return (this.QuestionText, this.CorrectAnswer).GetHashCode();
     }
 }
