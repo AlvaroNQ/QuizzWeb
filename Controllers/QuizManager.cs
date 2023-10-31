@@ -41,24 +41,24 @@ namespace QuizzWeb.Controllers
 
 
         public void openQuiz(QuizModel quiz, string path = "Assets") {
-            string jsonContent = File.ReadAllText(path + "/" + quiz.Metadata.Value.FileName);
+            string jsonContent = File.ReadAllText(path + "/" + quiz.Metadata.CreationInfo.FileName);
             JObject jsonObj = JObject.Parse(jsonContent);
 
             jsonObj["Metadata"]["Status"] = QuizStatusModel.InProgress.ToString();
             jsonObj["Metadata"]["lastOpened"] = DateTime.Now;
 
-            File.WriteAllText(path + "/" + quiz.Metadata.Value.FileName, jsonObj.ToString());
+            File.WriteAllText(path + "/" + quiz.Metadata.CreationInfo.FileName, jsonObj.ToString());
         }
 
         internal void closeQuiz(QuizModel quiz, string path = "Assets")
         {
-            string jsonContent = File.ReadAllText(path + "/" + quiz.Metadata.Value.FileName);
+            string jsonContent = File.ReadAllText(path + "/" + quiz.Metadata.CreationInfo.FileName);
             JObject jsonObj = JObject.Parse(jsonContent);
 
             jsonObj["Metadata"]["Status"] = QuizStatusModel.Completed.ToString();
             jsonObj["Metadata"]["lastOpened"] = DateTime.Now;
 
-            File.WriteAllText(path + "/" + quiz.Metadata.Value.FileName, jsonObj.ToString());
+            File.WriteAllText(path + "/" + quiz.Metadata.CreationInfo.FileName, jsonObj.ToString());
 
         }
     }

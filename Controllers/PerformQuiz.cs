@@ -26,7 +26,7 @@ namespace QuizzWeb.Controllers
             // shouldn't it start from 0?
             int i = 1;
             int countCorrect = 0;
-            foreach (QuestionModel question in quiz.Questions) {
+            foreach (MCModel question in quiz.MCQuestion) {
                 if (question.CorrectAnswer == userAnswers[i]) {
                     countCorrect++;
                 }

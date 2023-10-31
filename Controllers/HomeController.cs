@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuizzWeb.Models;
+using QuizzWeb.Models.QuizModels;
 using System.Diagnostics;
 
 namespace QuizzWeb.Controllers
