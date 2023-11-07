@@ -22,5 +22,5 @@ public class SearchQuizController : Controller
             return View("LoadQuiz", quiz);
         }
         return Content("Quiz not found");
-    }   
+    }  
 }

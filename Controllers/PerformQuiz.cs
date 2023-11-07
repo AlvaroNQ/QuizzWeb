@@ -19,14 +19,16 @@ namespace QuizzWeb.Controllers
             QuizModel quiz = quizManager.searchQuiz(formValues["Title"]);
             quizManager.closeQuiz(quiz);
 
-            foreach (var answer in formValues.Values)
+
+
+            foreach (string answer in formValues.Values)
             {
                 userAnswers.Add(answer);
             }
 
             int i = 1;
             int countCorrect = 0;
-            foreach (QuestionModel question in quiz.Questions) {
+            foreach (MCModel question in quiz.MCQuestions) {
                 if (question.CorrectAnswer == userAnswers[i]) {
                     countCorrect++;
                 }

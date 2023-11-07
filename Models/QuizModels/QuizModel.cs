@@ -1,29 +1,46 @@
-﻿using System;
+﻿using QuizzWeb.Models.QuizModels;
+using System;
 using System.Collections.Generic;
 
-public class QuizModel : QuestionnaireModel, IComparable<QuizModel>
+public class QuizModel: QuestionnaireModel
 {
-    public QuizMetadataModel? Metadata { get; set; }
-
+	public QuizMetadataModel? Metadata { get; set; }
+    
     public QuizModel()
+	{
+		this.Metadata = new QuizMetadataModel();
+	}
+	
+    public void RemoveDuplicates()
     {
-        this.Metadata = new QuizMetadataModel();
+		Metadata.edited();
+        //this.MCQuestions.RemoveDuplicates();
+        this.TFQuestions.RemoveDuplicates();
+
     }
-
-
-    public int CompareTo(QuizModel other)
+    public void AddQuestion<T>(T question) where T : QuestionBase
     {
-        if (other == null) return 1;
-
-        for (int i = 0; i < Questions.Count; i++)
+        if (question is MCModel mcQuestion)
         {
-            int questionComparison = Questions[i].CompareTo(other.Questions[i]);
-            if (questionComparison != 0)
-            {
-                return questionComparison;
-            }
+            MCQuestions?.Add(mcQuestion);
         }
-
-        return 0;
+        else if (question is TFModel tfQuestion)
+        {
+            TFQuestions?.Add(tfQuestion);
+        }
     }
+
+    public void RemoveQuestion<T>(T question) where T : QuestionBase
+    {
+        if (question is MCModel mcQuestion)
+        {
+            MCQuestions?.Remove(mcQuestion);
+        }
+        else if (question is TFModel tfQuestion)
+        {
+            TFQuestions?.Remove(tfQuestion);
+        }
+    }
+
+
 }
