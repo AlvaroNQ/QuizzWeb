@@ -21,9 +21,13 @@ namespace QuizzWeb.Controllers
 
         private void SaveQuizJson(QuizModel quiz)
         {
-            foreach (var question in quiz.MCQuestion) {
-                question.Answers?.Insert(0, question.CorrectAnswer);
+            if (quiz.MCQuestions != null) { 
+                foreach (var question in quiz.MCQuestions) {
+                    question.Answers?.Insert(0, question.CorrectAnswer);
+                }
             }
+            
+            quiz.RemoveDuplicates();
 
             string path = "./Assets/";
             string[] filesInDir = Directory.GetFiles(path, "quiz*.json");
@@ -33,7 +37,7 @@ namespace QuizzWeb.Controllers
             QuizMetadataModel metadata = new QuizMetadataModel(fileName);
             quiz.Metadata = metadata;
 
-            string json = JsonSerializer.Serialize(quiz, new JsonSerializerOptions{WriteIndented = true});
+            string json = JsonSerializer.Serialize(quiz, new JsonSerializerOptions { WriteIndented = true });
             System.IO.File.WriteAllText(filePath, json);
         }
     }

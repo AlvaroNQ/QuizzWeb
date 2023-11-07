@@ -31,10 +31,10 @@
 
         MCQuestionDiv.innerHTML = `
                         <label for= "MCQuestion${MCCount}"> Question ${MCCount + 1}: </label>
-                                <input type = "text" id ="MCQuestion${MCCount}" name = "MCQuestion[${MCCount}].QuestionText" required >
+                                <input type = "text" id ="MCQuestion${MCCount}" name = "MCQuestions[${MCCount}].QuestionText" required >
 
                     <label for= "MCQuestionCorrectAns${MCCount}"> Correct Answer: </label>
-                                <input type = "text" id = "MCQuestionCorrectAns${MCCount}" name = "MCQuestion[${MCCount}].CorrectAnswer" required >
+                                <input type = "text" id = "MCQuestionCorrectAns${MCCount}" name = "MCQuestions[${MCCount}].CorrectAnswer" required >
 
                     <div id="MCAnswersDiv${MCCount}"></div>
 
@@ -58,11 +58,11 @@
 
         questionDiv.innerHTML = `
                         <label for= "TFQuestion${TFCount}"> Question ${TFCount + 1}: </label>
-                            <input type = "text" id ="TFQuestion${TFCount}" name = "TFQuestion[${TFCount}].QuestionText" required >
+                            <input type = "text" id ="TFQuestion${TFCount}" name = "TFQuestions[${TFCount}].QuestionText" required >
 
-                    <label for= "TFQuestionCorrectAns${TFCount}"> Correct Answer: </label>
-                            <input type = "checkbox" id = "TFQuestionCorrectAns${TFCount}" name = "TFQuestion[${TFCount}].Answer">
-                `;
+                    <label for= "TFQuestionCorrectAns${TFCount}"> True: </label>
+                                <input type = "checkbox" id = "TFQuestionCorrectAns${TFCount}" name = "TFQuestions[${TFCount}].Answer">
+                    `;
 
         questionsContainer.appendChild(questionDiv);
     }

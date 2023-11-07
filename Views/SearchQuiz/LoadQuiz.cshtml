@@ -1,1 +1,65 @@
-﻿
+﻿@model QuizModel
+
+@functions {
+    // Helper function to shuffle a list randomly
+    List<T> Shuffle<T>(List<T> list)
+    {
+        Random rng = new Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+        return list;
+    }
+}
+
+<h2>@Model.Title</h2>
+
+<form method="post" action="/PerformQuiz/CheckAnswer">
+    @for (int i = 0; i < Model.MCQuestions.Count; i++)
+    {
+        var question = Model.MCQuestions[i];
+
+        // Shuffle the answer options for each question
+        var MCShuffledAnswers = Shuffle(question.Answers);
+
+        <div>
+            <!-- Hidden input for the title -->
+            <input type="hidden" name="Title" value="@Model.Title" />
+
+            <p>@question.QuestionText</p>
+            <ul>
+                @for (int j = 0; j < MCShuffledAnswers.Count; j++)
+                {
+                    var answer = MCShuffledAnswers[j];
+
+                    <li>
+                        <input type="radio" name="Question@(i + 1)" value="@answer" /> @answer
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    @for (int i = 0; i < Model.TFQuestions.Count; i++)
+    {
+        var tfQuestion = Model.TFQuestions[i];
+
+        <h3>Question @(i + 1): @tfQuestion.QuestionText</h3>
+
+        <ul>
+            <li>
+                <input type="radio" name="TFQuestion@(i + 1)" value="true" /> True
+            </li>
+            <li>
+                <input type="radio" name="TFQuestion@(i + 1)" value="false" /> False
+            </li>
+        </ul>
+    }
+    <button type="submit">Finish</button>
+</form>

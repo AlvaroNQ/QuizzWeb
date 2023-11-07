@@ -2,7 +2,7 @@
 
 public class QuizMetadataModel
 {  
-    public CreationInfo CreationInfo;
+    public CreationInfo CreationInfo { get; set; }
     public float PassRate { get; set; }
     public QuizStatusModel Status { get; set; }
     public DateTime? LastEdited { get; set; }

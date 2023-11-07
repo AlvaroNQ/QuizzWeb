@@ -11,16 +11,35 @@ public class QuizModel: QuestionnaireModel
 		this.Metadata = new QuizMetadataModel();
 	}
 	
-    public void AddQuestion<T>(T newQuestion)
+    public void RemoveDuplicates()
     {
 		Metadata.edited();
-        this.AddQuestion(newQuestion);
+        //this.MCQuestions.RemoveDuplicates();
+        this.TFQuestions.RemoveDuplicates();
+
+    }
+    public void AddQuestion<T>(T question) where T : QuestionBase
+    {
+        if (question is MCModel mcQuestion)
+        {
+            MCQuestions?.Add(mcQuestion);
+        }
+        else if (question is TFModel tfQuestion)
+        {
+            TFQuestions?.Add(tfQuestion);
+        }
     }
 
-	public void RemoveQuestion<T>(T newQuestion)
+    public void RemoveQuestion<T>(T question) where T : QuestionBase
     {
-		Metadata.edited();
-        this.AddQuestion(newQuestion);
+        if (question is MCModel mcQuestion)
+        {
+            MCQuestions?.Remove(mcQuestion);
+        }
+        else if (question is TFModel tfQuestion)
+        {
+            TFQuestions?.Remove(tfQuestion);
+        }
     }
 
 
