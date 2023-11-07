@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Assets\" />
+    <Folder Include="Views\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>
