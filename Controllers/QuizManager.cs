@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.IO;
 using System.Text.Json;
 using System.Linq;
+using Microsoft.VisualBasic;
+using System;
 
 namespace QuizzWeb.Controllers
 {
@@ -17,6 +20,7 @@ namespace QuizzWeb.Controllers
         public QuizModel? searchQuiz(string quizTitle)
         {
             var jsonFiles = Directory.EnumerateFiles(this.PathToJsons, "*.json");
+            List<QuizModel> jsonQuizzes = new List<QuizModel>();
 
             // Deserialize each file content into QuizModel and project into a list.
             var quizzes = jsonFiles.Select(file =>
@@ -25,55 +29,38 @@ namespace QuizzWeb.Controllers
                 return JsonSerializer.Deserialize<QuizModel>(content);
             }).ToList();
 
-            // Find the matching quiz using LINQ
-            var matchingQuiz = quizzes.FirstOrDefault(q => q.Title == quizTitle);
-
-            if (matchingQuiz != null)
-            {
-                // If a quiz is found, update its properties
-                matchingQuiz.Metadata = new QuizMetadataModel
-                {
-                    creationDate = matchingQuiz.Metadata.Value.creationDate,
-                    Status = QuizStatusModel.InProgress,
-                    lastOpened = DateTime.Now,
-                };
+                jsonQuizzes.Add(jsonObj.ToObject<QuizModel>());
             }
 
-            // Find the file path of the matching quiz
-            string quizFilePath = jsonFiles.First(file =>
-            {
-                string content = System.IO.File.ReadAllText(file);
-                var quiz = JsonSerializer.Deserialize<QuizModel>(content);
-                return quiz.Title == quizTitle;
-            });
+            this.Quiz = jsonQuizzes.FirstOrDefault(q => q.Title == quizTitle);
 
-            // Serialize the updated quiz back to JSON and save it to the file
-            string updatedQuizJson = JsonSerializer.Serialize(matchingQuiz);
-            System.IO.File.WriteAllText(quizFilePath, updatedQuizJson);
+            if (this.Quiz == null)
+                return null;
 
-            // Pass the name of the quiz into the view
-            return matchingQuiz;
+
+            return this.Quiz;
         }
 
+
         public void openQuiz(QuizModel quiz, string path = "Assets") {
-            string jsonContent = File.ReadAllText(path + "/" + quiz.Metadata.Value.FileName);
+            string jsonContent = File.ReadAllText(path + "/" + quiz.Metadata.CreationInfo.FileName);
             JObject jsonObj = JObject.Parse(jsonContent);
 
             jsonObj["Metadata"]["Status"] = QuizStatusModel.InProgress.ToString();
             jsonObj["Metadata"]["lastOpened"] = DateTime.Now;
 
-            File.WriteAllText(path + "/" + quiz.Metadata.Value.FileName, jsonObj.ToString());
+            File.WriteAllText(path + "/" + quiz.Metadata.CreationInfo.FileName, jsonObj.ToString());
         }
 
         internal void closeQuiz(QuizModel quiz, string path = "Assets")
         {
-            string jsonContent = File.ReadAllText(path + "/" + quiz.Metadata.Value.FileName);
+            string jsonContent = File.ReadAllText(path + "/" + quiz.Metadata.CreationInfo.FileName);
             JObject jsonObj = JObject.Parse(jsonContent);
 
             jsonObj["Metadata"]["Status"] = QuizStatusModel.Completed.ToString();
             jsonObj["Metadata"]["lastOpened"] = DateTime.Now;
 
-            File.WriteAllText(path + "/" + quiz.Metadata.Value.FileName, jsonObj.ToString());
+            File.WriteAllText(path + "/" + quiz.Metadata.CreationInfo.FileName, jsonObj.ToString());
 
         }
     }
